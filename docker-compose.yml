@@ -1,0 +1,83 @@
+version: '3.3'
+
+networks:
+  laravel:
+    driver: bridge
+
+volumes:
+  dbdata:
+    driver: local
+
+services:
+  nginx:
+    build:
+      context: .
+      dockerfile: ./compose/nginx/Dockerfile
+    container_name: bank_nginx
+    ports:
+      - "127.0.0.1:8080:80"
+    volumes:
+      - ./source:/var/www/html
+    depends_on:
+      - php
+      - mysql
+    networks:
+      - laravel
+
+  mysql:
+    image: mysql:latest
+    container_name: bank_mysql
+    restart: always
+    ports:
+      - "127.0.0.1:3306:3306"
+    environment:
+      MYSQL_DATABASE: ${DB_DATABASE}
+      MYSQL_USER: ${DB_USERNAME}
+      MYSQL_PASSWORD: ${DB_PASSWORD}
+      MYSQL_ROOT_PASSWORD: secret
+      SERVICE_TAGS: dev
+      SERVICE_NAME: mysql
+    volumes:
+      - ./storage/database:/var/lib/mysql/
+    networks:
+      - laravel
+
+  php:
+    build:
+      context: .
+      dockerfile: ./compose/php/Dockerfile
+    container_name: bank_php
+    volumes:
+      - ./source:/var/www/html:delegated
+    ports:
+      - "127.0.0.1:9000:9000"
+    networks:
+      - laravel
+
+  composer:
+    build:
+      context: .
+      dockerfile: ./compose/php/composer/Dockerfile
+    container_name: bank_composer
+    volumes:
+      - ./source:/var/www/html
+    working_dir: /var/www/html
+    user: laravel
+    networks:
+      - laravel
+    entrypoint: [ 'composer', '--ignore-platform-reqs' ]
+
+  artisan:
+    build:
+      context: .
+      dockerfile: ./compose/php/Dockerfile
+    container_name: bank_artisan
+    volumes:
+      - ./source:/var/www/html:delegated
+    depends_on:
+      - mysql
+    working_dir: /var/www/html
+    user: laravel
+    entrypoint: [ 'php', '/var/www/html/artisan' ]
+    networks:
+      - laravel
