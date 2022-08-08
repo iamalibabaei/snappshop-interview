@@ -23,4 +23,4 @@ run-tests:
 	docker-compose exec php php artisan test
 
 test: create-env install run-tests
-up: run-project run-worker
+up: create-env install migrate run-project run-worker
