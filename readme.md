@@ -51,7 +51,7 @@ third: `/api/users/most` make a get request to this endpoint, and you will get t
 - Every amount in project is in Rials.
 - For making transactions, you should have transaction amount + transaction fee at the moment.
 - For purpose of this project, I use database as queue provider. In production env, alternative solution might be better.
-
+Also I forgot to mention that to avoid repeated transactions that happen because of network problems or user requesting for many times or ..., We should introduce a unique key for transaction for example an uuid that client sends and check even request is duplicated or not but this is not implemented but it is so easy.
 
 ---
 
