@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Models\CreditCard;
 use App\Rules\CreditCardNumberRule;
 use Illuminate\Foundation\Http\FormRequest;
 
@@ -14,7 +15,9 @@ class CreateTransactionRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return true;
+        return CreditCard::where('card_number', $this->source_card_number)->whereHas('account', function ($query) {
+            $query->where('user_id', $this->user()->id);
+        })->exists();
     }
 
     /**
@@ -25,9 +28,9 @@ class CreateTransactionRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'source_card_number' => ['required', new CreditCardNumberRule()],
-            'destination_card_number' => ['required', new CreditCardNumberRule()],
-            'amount' => ['required', 'min:10000', 'max:500000000'],
+            'source_card_number' => ['required', 'string', 'exists:credit_cards,card_number', new CreditCardNumberRule()],
+            'destination_card_number' => ['required', 'string', 'different:source_card_number', 'exists:credit_cards,card_number', new CreditCardNumberRule()],
+            'amount' => ['required', 'int', 'min:10000', 'max:500000000'],
         ];
     }
 }

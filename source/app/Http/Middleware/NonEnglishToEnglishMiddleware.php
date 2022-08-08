@@ -3,6 +3,7 @@
 namespace App\Http\Middleware;
 
 use Closure;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -20,9 +21,9 @@ class NonEnglishToEnglishMiddleware
      *
      * @param Request $request
      * @param Closure(\Illuminate\Http\Request): (\Illuminate\Http\Response|\Illuminate\Http\RedirectResponse)  $next
-     * @return Response|RedirectResponse
+     * @return JsonResponse|Response|RedirectResponse
      */
-    public function handle(Request $request, Closure $next): Response|RedirectResponse
+    public function handle(Request $request, Closure $next): JsonResponse|Response|RedirectResponse
     {
         $except = array_merge($this->except, array_slice(func_get_args(), 2));
         $request->merge($this->process($request->except($except)));
@@ -49,7 +50,7 @@ class NonEnglishToEnglishMiddleware
      * @param mixed $value
      * @return mixed
      */
-    protected function processValue(string $value): mixed
+    protected function processValue(?string $value): mixed
     {
         $arabicDigits = ['٠', '١', '٢', '٣', '٤', '٥', '٦', '٧', '٨', '٩'];
         $persianDigits = ['۰', '۱', '۲', '۳', '۴', '۵', '۶', '۷', '۸', '۹'];

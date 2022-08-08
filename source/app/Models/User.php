@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -47,8 +46,15 @@ class User extends Authenticatable
     /**
      * Get the accounts for the user.
      */
-    public function comments(): HasMany
+    public function accounts(): HasMany
     {
         return $this->hasMany(Account::class);
+    }
+
+    public function getLastTransactions(int $limit = 10)
+    {
+        return Transaction::whereHas('sourceCard.account.user', function ($query) {
+           $query->where('id', $this->id);
+        })->orderby('created_at', 'desc')->limit($limit)->get();
     }
 }

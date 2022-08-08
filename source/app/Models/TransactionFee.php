@@ -10,6 +10,8 @@ class TransactionFee extends Model
 {
     use HasFactory;
 
+    const FEE = 5000;
+
     /**
      * The attributes that are mass assignable.
      *
