@@ -5,7 +5,7 @@ namespace Tests\Unit\Middleware;
 use App\Http\Middleware\NonEnglishToEnglishMiddleware;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use PHPUnit\Framework\TestCase;
+use Tests\TestCase;
 
 class NonEnglishToEnglishMiddlewareTest extends TestCase
 {

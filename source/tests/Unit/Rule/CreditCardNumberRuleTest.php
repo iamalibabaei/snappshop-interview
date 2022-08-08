@@ -3,7 +3,7 @@
 namespace Tests\Unit\Rule;
 
 use App\Rules\CreditCardNumberRule;
-use PHPUnit\Framework\TestCase;
+use Tests\TestCase;
 
 class CreditCardNumberRuleTest extends TestCase
 {
