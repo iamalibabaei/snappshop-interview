@@ -43,7 +43,7 @@ class TransactionReceived extends Notification implements ShouldQueue
      */
     public function toSms(mixed $notifiable): SmsMessage
     {
-        return new SmsMessage(
+        $message = new SmsMessage(
             [
                 'body' => __(
                     'messages.transfer.received',
@@ -52,6 +52,8 @@ class TransactionReceived extends Notification implements ShouldQueue
                 'receiver_phone' => $notifiable->phone_number
             ]
         );
+        $message->save();
+        return $message;
     }
 
 }
