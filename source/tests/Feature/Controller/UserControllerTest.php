@@ -24,6 +24,7 @@ class UserControllerTest extends TestCase
 
     private function seed_db(): void
     {
+        $this->refreshDatabase();
         $user1 = User::factory()->create([
             'name' => 'User One'
         ]);

@@ -18,7 +18,5 @@ class Kavenegar implements SmsInterface
     function send(string $receiver, string $message)
     {
         $this->api->Send(env("KAVENEGAR_SENDER",), $receiver, $message);
-        //sleep for 3 seconds
-        sleep(10);
     }
 }
