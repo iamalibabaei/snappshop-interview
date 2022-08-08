@@ -25,6 +25,7 @@ class UserControllerTest extends TestCase
     private function seed_db(): void
     {
         $this->refreshDatabase();
+        sleep(3);
         $user1 = User::factory()->create([
             'name' => 'User One'
         ]);
@@ -67,6 +68,7 @@ class UserControllerTest extends TestCase
                 'amount' => 15000
             ]);
         }
+        sleep(3);
     }
 
     public function tearDown(): void

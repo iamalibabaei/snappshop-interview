@@ -3,11 +3,11 @@
 to run this project and tests, make sure you have docker and docker-compose installed and running:
 run `dcoker -v`
 
-## RUN TEST
+## Run Tests
 
 to run tests, just run `make test` and wait till the end.
 
-## Run PROJECT
+## Run Project
 
 to run project, run `make up` and wail till the end.
 
