@@ -39,18 +39,18 @@ class Account extends Model
         return $this->hasMany(CreditCard::class);
     }
 
-    public function hasEnoughMoney(int $amount)
+    public function hasEnoughMoney(int $amount): bool
     {
         return $this->balance >= $amount;
     }
 
-    public function decreaseBalance($amount)
+    public function decreaseBalance($amount): void
     {
         $this->balance -= $amount;
         $this->save();
     }
 
-    public function increaseBalance(int $amount)
+    public function increaseBalance(int $amount): void
     {
         $this->balance += $amount;
         $this->save();

@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -51,7 +52,7 @@ class User extends Authenticatable
         return $this->hasMany(Account::class);
     }
 
-    public function getLastTransactions(int $limit = 10)
+    public function getLastTransactions(int $limit = 10): Collection
     {
         return Transaction::whereHas('sourceCard.account.user', function ($query) {
            $query->where('id', $this->id);
